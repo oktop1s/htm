@@ -25,7 +25,7 @@ def sample():
     pool = SpatialPool(overlap_threshold,potential_connections,column_density,size,permenence_threshold,inactive_decrement,active_increment)
     pool.connect(input)
     pool.overlap(input)
-    pool.visualize()
+    pool.viz()
     print(f'Total number of active mini columns: {pool.active_columns()}')
 
 def calculateConnections():
@@ -56,6 +56,7 @@ def wordTest():
     best = w.encode('queen')
     pool = SpatialPool(overlap_threshold,potential_connections,column_density,size,permenence_threshold,inactive_decrement,active_increment)
     pool.connect(best)
-    viz(pool.overlap(best))
+    pool.overlap(best)
+    pool.viz()
 
-sample()
+wordTest()

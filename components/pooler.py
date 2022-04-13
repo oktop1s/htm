@@ -83,7 +83,9 @@ class miniColumn():
         return neurons
 
     def connect(self,input_bit,permenence_threshold,inactive_decrement,active_increment):
-        #connects neurons to particular input. Ex: (1,1)
+        """
+        Connects neurons to particular input. Ex: (1,1)
+        """
         for neuron in self.neurons:
             synapse = Connection(input_bit,neuron.id,permenence_threshold,inactive_decrement,active_increment)
             neuron.addConnection(synapse)
@@ -92,14 +94,18 @@ class miniColumn():
                 self.activeConnections.append(synapse)
     
     def check(self,input_bit,synapses):
-        #returns True if a connection is active with an input bit, else: False
+        """
+        returns True if a connection is active with an input bit, else: False
+        """
         for s in synapses:
             if s.input == input_bit and s.active:
                 return True
         return False
 
     def overlap(self,input,overlap_threshold):
-        #calculate the number of overlapping connections with input
+        """
+        calculate the number of overlapping connections with input
+        """
         synapses = self.neurons[0].connections
         overlaps = []
         overlap_score = 0
@@ -125,7 +131,9 @@ class SpatialPool():
         self.miniColumns, self.space = self.initialize(size)
 
     def initialize(self,size):
-        #create the spatial pool
+        """
+        Initialize the Spatial Pooler
+        """
         print('Creating the Space Pool')
         id = 0
         space = [[0 for i in range(size)] for j in range(size)]
@@ -139,7 +147,9 @@ class SpatialPool():
         return miniColumns, space
     
     def connect(self,input):
-        #creates miniColumn connections to input datapoints
+        """
+        Creates miniColumn connections to input datapoints
+        """
         print('Creating synapses...')
         for c in tqdm(self.miniColumns):
             for i in range(self.size):
@@ -148,18 +158,20 @@ class SpatialPool():
                         c.connect(input[i][j],self.permenence_threshold,self.inactive_decrement,self.active_increment)
 
     def overlap(self,input):
-        #Compute the overlap with the current input for each column
+        """
+        Compute the overlap with the current input for each column
+        """
         print('Computing Overlap...')
         for c in tqdm(self.miniColumns):
             #print(c.id,c.active)
             c.overlap(input,self.overlap_threshold)
 
     def inhibition(self):
-        #Compute the winning columns after inhibition
+        #TODO Compute the winning columns after inhibition
         pass
 
     def learn(self):
-        #Update synapse permanences and internal variables
+        #TODO Update synapse permanences and internal variables
         pass
 
     def transform(self):
@@ -188,8 +200,10 @@ class SpatialPool():
                     counter += 1
         return counter
 
-    def visualize(self):
-        #Display Spatial Pooling
+    def viz(self):
+        """
+        Turns Spatial Pool status into SDR and represents it 
+        """
         sdr = self.transform()
         colormap = colors.ListedColormap(["black","red"])
         pyplot.figure(figsize=(5,5))
