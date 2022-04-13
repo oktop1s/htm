@@ -23,19 +23,18 @@ class Connection():
     def __init__(self,input,neuron,active_increment,inactive_decrement,permenence_threshold):
         self.input = input  
         self.neuron = neuron
-        self.connection = self.create_connection(input,neuron)
+        self.connection = self.create_connection(input,neuron,permenence_threshold)
         self.active_increment = active_increment
         self.inactive_decrement = inactive_decrement
         self.permenence_threshold = permenence_threshold
 
         self.active = self.isActive()
 
-    def create_connection(self,input,neuron):
-        import random
+    def create_connection(self,input,neuron,permenence_threshold):
         synapse = {
                 'input':input,
                 'neuron':neuron, 
-                'permenance':random.random()
+                'permenance':np.random.normal(loc=permenence_threshold) #normalized distribution with mean permenence_threshold
                 } 
         return synapse
 
@@ -164,8 +163,10 @@ class SpatialPool():
         pass
 
     def transform(self):
-        #Transform self.miniColumns into a 2d numpy array ( active=1, inactive=0 )
-        #returns numpy array
+        """
+        Transform self.miniColumns into a 2d numpy array ( active=1, inactive=0 )
+        returns numpy array
+        """
         id = 0
         copy = deepcopy(self.representation)
         for i in range(self.size):
@@ -173,8 +174,19 @@ class SpatialPool():
                 if self.space[i][j].active:
                     copy[i][j] = 1
                 else: copy[i][j] = 0
-        print(copy)
+        #print(copy)
         return copy
+
+    def active_columns(self):
+        """
+        Returns the number of active mini columns
+        """
+        counter = 0
+        for i in range(self.size):
+            for j in range(self.size):
+                if self.space[i][j].active:
+                    counter += 1
+        return counter
 
     def visualize(self):
         #Display Spatial Pooling

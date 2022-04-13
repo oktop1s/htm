@@ -10,18 +10,23 @@ from components.encoders import TimeEncoder, WordEncoder
 potential_connections = .1 # % of potential connections 
 inactive_decrement = .008 # decrement step in permenence for de-learning
 active_increment = .1  # increment step for reinforcing connections
-permenence_threshold = .95 # the threshold that will determine if the connection is active or not
-overlap_threshold = 20 # numer of overlaping connections to consider that a column is active
+permenence_threshold = .001 # the threshold that will determine if the connection is active or not
+overlap_threshold = 10 # numer of overlaping connections to consider that a column is active
 column_density = 2 # number of neurons per miniColumnn
 
 sparsity = .02
-size = 100
+size = 25
 
 def sample():
+    """
+    Generate a random SDR as input data, initialize a Spatial Pool, connect pooler to input, calculate overlap
+    """
     input = generate_sdr(size,sparsity)
     pool = SpatialPool(overlap_threshold,potential_connections,column_density,size,permenence_threshold,inactive_decrement,active_increment)
     pool.connect(input)
     pool.overlap(input)
+    pool.visualize()
+    print(f'Total number of active mini columns: {pool.active_columns()}')
 
 def calculateConnections():
     i = 0
@@ -53,5 +58,4 @@ def wordTest():
     pool.connect(best)
     viz(pool.overlap(best))
 
-wordEncoder()
-
+sample()
