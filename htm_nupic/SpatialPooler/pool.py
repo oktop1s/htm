@@ -20,6 +20,7 @@
 # ----------------------------------------------------------------------
 
 import itertools
+from tqdm import tqdm
 
 import numpy as np
 
@@ -628,7 +629,7 @@ class SpatialPooler:
 
         overlaps = np.zeros(self.num_minicolumns, dtype=real_type)
 
-        for m in range(self.num_minicolumns):
+        for m in tqdm(range(self.num_minicolumns)):
             overlaps[m] = input_vector[self.connected_synapses[m, :] > 0].sum()
 
         return overlaps
@@ -744,7 +745,7 @@ class SpatialPooler:
         permanence_changes.fill(-1 * self.synapse_perm_dec)
         permanence_changes[input_indices] = self.synapse_perm_inc
 
-        for minicolumn_index in active_minicolumns:
+        for minicolumn_index in tqdm(active_minicolumns):
             # find synaptic permanences for all input bits of current minicolumn
             permanence = self.permanences[minicolumn_index, :]
 
@@ -801,7 +802,7 @@ class SpatialPooler:
             self.overlap_duty_cycles < self.min_overlap_duty_cycles
         )[0]
 
-        for minicolumn_index in weak_minicolumns:
+        for minicolumn_index in tqdm(weak_minicolumns):
             # find synaptic permanences for all input bits of current minicolumn
             permanence = self.permanences[minicolumn_index, :].astype(real_type)
 
