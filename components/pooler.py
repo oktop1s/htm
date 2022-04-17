@@ -72,6 +72,7 @@ class miniColumn():
         self.neurons = self.createNeurons(column_density)
         self.activeConnections = []
         self.totalConnections = []
+        self.overlap_score = 0
     
     def createNeurons(self,column_density):
         #creates neurons
@@ -108,14 +109,15 @@ class miniColumn():
         """
         synapses = self.neurons[0].connections
         overlaps = []
-        overlap_score = 0
+        score = 0
         for i in range(len(input)):
             for j in range(len(input)):
                 if input[i][j]==1 and self.check(input[i][j],synapses):
                     overlaps.append((i,j))
-                    overlap_score += 1
-        if overlap_score >= overlap_threshold:
+                    score += 1
+        if score >= overlap_threshold:
             self.active = True
+        self.overlap_score = score
 
 class SpatialPool():
     def __init__(self,overlap_threshold,potential_connections,column_density,size,permenence_threshold,inactive_decrement,active_increment):
@@ -172,6 +174,7 @@ class SpatialPool():
 
     def learn(self):
         #TODO Update synapse permanences and internal variables
+        
         pass
 
     def transform(self):

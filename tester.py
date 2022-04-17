@@ -59,4 +59,13 @@ def wordTest():
     pool.overlap(best)
     pool.viz()
 
-wordTest()
+def sequence(sentence):
+    w = WordEncoder()  
+    sequence = [] 
+    for i in range(len(sentence)):
+        sequence.append(w.encode(sentence[i]))
+    return sequence
+
+sentence = ['green','red','blue']
+seq = sequence(sentence)
+print(seq)
