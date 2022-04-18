@@ -27,7 +27,6 @@ def percentOverlap(x1, x2, size):
   return percentOverlap
 
 
-
 def corruptVector(vector, noiseLevel):
   """
   Corrupts a binary vector by inverting noiseLevel percent of its bits.
@@ -45,7 +44,6 @@ def corruptVector(vector, noiseLevel):
         vector[i] = 1
 
 
-
 def resetVector(x1, x2):
   """
   Copies the contents of vector x1 into vector x2.
@@ -59,8 +57,8 @@ def resetVector(x1, x2):
 
 random.seed(1)
 uintType = "uint32"
-inputDimensions = (1000,1)
-columnDimensions = (2048,1)
+inputDimensions = (32,32)
+columnDimensions = (64,64)
 inputSize = np.array(inputDimensions).prod()
 columnNumber = np.array(columnDimensions).prod()
 inputArray = np.zeros(inputSize, dtype=uintType)
@@ -68,6 +66,7 @@ inputArray = np.zeros(inputSize, dtype=uintType)
 for i in range(inputSize):
   inputArray[i] = random.randrange(2)
 
+print(inputArray)
 activeCols = np.zeros(columnNumber, dtype=uintType)
 
 sp = SP(
@@ -79,7 +78,7 @@ sp = SP(
         potential_percent=0.5,
         global_inhibition=True,
         stimulus_threshold=0,
-        synapse_perm_inc=0.03,
+        synapse_perm_inc=0.01,
         synapse_perm_dec=0.008,
         synapse_perm_connected=0.1,
         min_percent_overlap_duty_cycles=0.001,

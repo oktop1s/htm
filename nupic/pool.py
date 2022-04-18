@@ -292,7 +292,7 @@ class SpatialPooler:
 
         self.connected_synapses_counts = np.zeros(self.num_minicolumns, dtype=real_type)
 
-        for minicolumn_index in range(self.num_minicolumns):
+        for minicolumn_index in tqdm(range(self.num_minicolumns)):
             potential = self.map_potential(minicolumn_index)
             self.potential_pools[minicolumn_index, potential.nonzero()[0]] = 1
             permanence = self.init_permanence(potential)

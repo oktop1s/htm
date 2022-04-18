@@ -1,6 +1,7 @@
 from matplotlib import colors,pyplot
 import numpy as np  
 import random
+import math
 
 def overlap(sdr1,sdr2):
     """
@@ -48,15 +49,47 @@ def vizComplete(sdr):
     pyplot.imshow(sdr,cmap=colormap)
     pyplot.show()
 
-def generate_sdr(size,sparsity):
+def generate_sdr(size,sparsity,dimensionality=2):
     """
     Randomly generate an SDR of size and sparsity
     """
-    data = np.zeros((size,size))
-    active = len(data)**2*sparsity
-    while active>0:
-        i = random.randint(0,len(data)-1)
-        j = random.randint(0,len(data)-1)
-        data[i][j] = 1
-        active -= 1
-    return data
+    if dimensionality == 2:
+        data = np.zeros((size,size))
+        active = len(data)**2*sparsity
+        while active>0:
+            i = random.randint(0,len(data)-1)
+            j = random.randint(0,len(data)-1)
+            data[i][j] = 1
+            active -= 1
+        return data
+    elif dimensionality == 0:
+        return TypeError('Dimensionality  cannot be 0')
+    elif dimensionality == 1:
+        data = np.zeros(size)
+        active = len(data)**2*sparsity
+        while active>0:
+            i = random.randint(0,len(data)-1)
+            data[i] = 1
+            active -= 1
+        return data
+
+def dimensionalityReduction(input_sdr):
+    """
+    Transforms a 2d SDR into 1d array
+    """
+    uintType = "uint32"
+    output = np.zeros(len(input_sdr)**2,dtype=uintType)
+    p = 0
+    for i in range(len(input_sdr)):
+        for j in range(len(input_sdr)):
+            output[p] = input_sdr[i][j]
+            p += 1
+    return output
+
+def viz1d(input_sdr):
+    """
+    Vizualize 1d sdr
+    """
+    size = int(math.sqrt(len(input_sdr)))
+    arr_2d = np.reshape(input_sdr, (size, size))
+    viz(arr_2d)

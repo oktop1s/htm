@@ -31,6 +31,7 @@ class WordEncoder():
                 word = row[0]
                 vector = np.array([float(x) for x in row[1:]])
                 words[word] = vector
+        f.close()
         return words
 
     def encode(self,word):
