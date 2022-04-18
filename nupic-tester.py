@@ -1,6 +1,6 @@
-from components.encoders import TimeEncoder, WordEncoder 
+from components.encoders import WordEncoder 
 from components.sdr import *
-from nupic.pool import SpatialPooler as SP
+from nupic.algorithms.spatial_pooler import SpatialPooler as SP
 from nupic.temporal_memory.temporal_memory import TemporalMemoryApicalTiebreak
 import numpy as np
 from tqdm import tqdm
@@ -316,6 +316,6 @@ def Test2(epochs):
             print('Current Overlaps', overlaps)
             print('Vizualizing Potential Pool')
             saveFromActive(1024,active)
-            
+
 Test2(10)
 
