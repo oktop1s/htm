@@ -2,6 +2,10 @@ from matplotlib import colors,pyplot
 import numpy as np  
 import random
 import math
+import time
+import os 
+
+uintType = "uint32"
 
 def overlap(sdr1,sdr2):
     """
@@ -77,7 +81,6 @@ def dimensionalityReduction(input_sdr):
     """
     Transforms a 2d SDR into 1d array
     """
-    uintType = "uint32"
     output = np.zeros(len(input_sdr)**2,dtype=uintType)
     p = 0
     for i in range(len(input_sdr)):
@@ -86,10 +89,48 @@ def dimensionalityReduction(input_sdr):
             p += 1
     return output
 
-def viz1d(input_sdr):
+def to2d(input_sdr):
     """
     Vizualize 1d sdr
     """
     size = int(math.sqrt(len(input_sdr)))
     arr_2d = np.reshape(input_sdr, (size, size))
-    viz(arr_2d)
+    return arr_2d
+
+def boolToBin(input_sdr):
+    """
+    Turns a 2d boolean SDR into 0 | 1 SDR
+    """ 
+    return input_sdr.astype(int)
+
+def vizFromActive(size,active):
+    """
+    size is an integer that represents the lenghth of the arry 
+    active is a list with the index number 
+    """
+    data = np.zeros(size)
+    for a in active:
+        data[a] = 1
+    viz(to2d(data))
+
+def saveSDR(sdr,name):
+    results_dir = 'results/sdr'
+    colormap = colors.ListedColormap(["black","red","yellow"])
+    pyplot.figure(figsize=(5,5))
+    pyplot.imshow(sdr,cmap=colormap)
+    pyplot.savefig(results_dir + name + '.png')
+    pyplot.close()
+
+def saveFromActive(size,active):
+    results_dir = 'results/'
+    current_time = str(time.time())
+    data = np.zeros(size)
+    for a in active:
+        data[a] = 1
+    size = int(math.sqrt(len(data)))
+    arr_2d = np.reshape(data, (size, size))  
+    colormap = colors.ListedColormap(["black","red"])
+    pyplot.figure(figsize=(5,5))
+    pyplot.imshow(arr_2d,cmap=colormap)
+    pyplot.savefig(results_dir + current_time + '.png')
+    pyplot.close()
